@@ -1,17 +1,23 @@
 import { config } from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
 
 
 
 
-config({
-  path: `.env.${process.env.NODE_ENV || "development"}.local.env`,
-});
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const env = process.env.NODE_ENV || "development";
+
+const envFilePath = path.resolve(__dirname, `.env.${env}.local.env`);
 
 
+config({ path: envFilePath });
 
 
-
-export const { PORT,  } = process.env;
-
+export const { PORT } = process.env;
 
 
+console.log("ENV file loaded from:", envFilePath);
+console.log("PORT =", PORT);

@@ -4,16 +4,16 @@ import { Router } from "express";
 const authRouter = Router();
 
 authRouter.get('/sign-up',(req, res) => {
-  res.send(body, {title: 'Sign-Up'});
+  res.send( {title: 'Sign-Up'});
 });
 
 authRouter.get('/sign-in',(req, res) => {
-  res.send(body, {title: 'Sign-In'});
+  res.send({title: 'Sign-In'});
 });
 
 
 authRouter.get('/sign-out', (req, res) => {
-  res.send(body, {title: 'Sign-Out'});
+  res.send({title: 'Sign-Out'});
 });
 
 
