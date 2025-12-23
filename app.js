@@ -4,8 +4,7 @@ import {PORT} from './config/env.js';
 import UserRouter from './routes/user_route.js';
 import SubscriptionRouter from './routes/subcription_route.js';
 import authRouter from './routes/auth_route.js';
-
-
+import connectDB from './database/mongodb.js';
 
 
 
@@ -26,8 +25,11 @@ app.get('/', (req, res) => {
 });
 
 
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   console.log(`Server is running on http://localhost:${PORT}`);
+
+
+  await connectDB();
 });
 
 
