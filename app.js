@@ -5,10 +5,14 @@ import UserRouter from './routes/user_route.js';
 import SubscriptionRouter from './routes/subcription_route.js';
 import authRouter from './routes/auth_route.js';
 import connectDB from './database/mongodb.js';
+import errormiddleware from './middlewares/error_middleware.js';
 
 
 
 const app = express();
+
+
+app.use(errormiddleware)
 
 
 app.use('/api/auth', authRouter);
