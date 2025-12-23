@@ -16,7 +16,7 @@ const envFilePath = path.resolve(__dirname, `.env.${env}.local.env`);
 config({ path: envFilePath });
 
 
-export const { PORT, DB_URL} = process.env;
+export const { PORT, NODE_ENV, DB_URL} = process.env;
 
 
 
