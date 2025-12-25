@@ -34,3 +34,6 @@ const errormiddleware = (err, req, res, next) => {
        next(error);
     }
 };
+
+
+export default errormiddleware;

@@ -1,15 +1,19 @@
 import express from 'express';
-
 import {PORT} from './config/env.js';
 import UserRouter from './routes/user_route.js';
 import SubscriptionRouter from './routes/subcription_route.js';
 import authRouter from './routes/auth_route.js';
 import connectDB from './database/mongodb.js';
-import errormiddleware from './middlewares/error_middleware.js';
+import errormiddleware from './middleware/error.middleware.js';
+import cookieParser from 'cookie-parser';
 
 
 
 const app = express();
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true}))
+app.use(cookieParser())
 
 
 app.use(errormiddleware)
