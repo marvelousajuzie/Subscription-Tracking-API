@@ -22,3 +22,4 @@ const aj = arcjet({
     }),
   ],
 });
+export default aj;

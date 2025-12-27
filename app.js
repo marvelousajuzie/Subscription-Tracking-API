@@ -6,6 +6,7 @@ import authRouter from './routes/auth_route.js';
 import connectDB from './database/mongodb.js';
 import errormiddleware from './middleware/error.middleware.js';
 import cookieParser from 'cookie-parser';
+import arcjetMiddleware from './middleware/arcjet.middleware.js';
 
 
 
@@ -14,6 +15,7 @@ const app = express();
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 app.use(cookieParser())
+app.use(arcjetMiddleware)
 
 
 app.use(errormiddleware)
