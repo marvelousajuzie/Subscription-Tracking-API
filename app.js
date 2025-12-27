@@ -12,13 +12,16 @@ import arcjetMiddleware from './middleware/arcjet.middleware.js';
 
 const app = express();
 
+
+app.set('trust proxy', true);
+
 app.use(express.json())
 app.use(express.urlencoded({ extended: true}))
 app.use(cookieParser())
 app.use(arcjetMiddleware)
 
 
-app.use(errormiddleware)
+
 
 
 app.use('/api/auth', authRouter);
@@ -27,7 +30,7 @@ app.use('/api/subscriptions', SubscriptionRouter);
 
 
 
-
+app.use(errormiddleware)
 
 
 app.get('/', (req, res) => {

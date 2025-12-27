@@ -7,17 +7,22 @@ const subscriptionSchema = new mongoose.Schema({
     required: true,
     index: true,
   },
-  nane: {
+  name: {
     type: String,
     required: [true, 'Subscription name is required'],
     trim: true,
-    max_length: 100,
+    maxlength: 100,
   },
   plan: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+  price: {  
     type: Number,
     required: true,
-   min: [0,'plans must be positive number'],
-   max: [10000,'plans exceed the limit'],
+    min: [0, 'Price must be positive number'],
+    max: [10000, 'Price exceeds the limit'],
   },
   currency: {
     type: String,
@@ -26,22 +31,23 @@ const subscriptionSchema = new mongoose.Schema({
   },
   frequency: {
     type: String,
-    enum: ['daily', 'weekly','monthly', 'yearly'],
+    enum: ['daily', 'weekly', 'monthly', 'yearly'],
     required: true,
   },
   category: {
     type: String,
     enum: ['entertainment', 'education', 'productivity', 'health', 'other'],
     required: true,
+    lowercase: true
   },
-   paymentMethod: {  
-    type: Number,
+  paymentMethod: {  
+    type: String,
     required: true,
     trim: true,
   },
-    status: {
+  status: {
     type: String,
-    enum: ['active', 'inactive', 'canceled'],
+    enum: ['active', 'inactive', 'canceled', 'expired'],
     default: 'active',
   },
   startDate: {
@@ -60,14 +66,12 @@ const subscriptionSchema = new mongoose.Schema({
       validator: function (v) {
         return v > new Date();
       },
-      message: 'Renewal date cannot be in the future',
+      message: 'Renewal date must be in the future',
     },
   }
 }, { timestamps: true });
 
-
-
-subscriptionSchema.pre('save', function (next) {
+subscriptionSchema.pre('save', async function (){
   if (!this.renewalDate) {
     const renewalPeriod = {
       daily: 1,
@@ -79,16 +83,12 @@ subscriptionSchema.pre('save', function (next) {
     this.renewalDate = new Date(this.startDate);
     this.renewalDate.setDate(this.renewalDate.getDate() + renewalPeriod[this.frequency]);
   }
-  //Auto update if renewalDate is past due
+  
+  // Auto update if renewalDate is past due
   if (this.renewalDate <= new Date()) {
-   this.status = 'expired';
-    }
-    next();
+    this.status = 'expired';
+  }
 });
-
-
-
-
 
 const Subscription = mongoose.model('Subscription', subscriptionSchema);
 
