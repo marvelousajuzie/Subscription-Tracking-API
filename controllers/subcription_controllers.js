@@ -18,3 +18,24 @@ export const createSubcription = async (req, res, next) => {
         next(error);
     }
 };
+
+
+export const getUserSubcriptions = async (req, res, next) => {
+    try {
+
+        if (req.user.id !== req.user._id) {
+            const error = new Error('Not The Account Owner');
+            error.statusCode = 403;
+            throw error;
+        }
+        const subcriptions = await Subcription.find({ userId: req.user._id });
+
+        res.status(200).json({
+            success: true,
+            message: "Subcriptions retrieved successfully",
+            data: subcriptions
+        });
+    } catch (error) {
+        next(error);
+    }
+};
