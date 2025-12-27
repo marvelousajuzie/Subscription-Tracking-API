@@ -1,7 +1,9 @@
+import jwt from 'jsonwebtoken';
 import {JWT_SECRET} from "../config/env.js";
+import User from "../models/user.model.js";
 
 
-const authorize = (req, res, next) => {
+const authorize = async (req, res, next) => {
     try {
 
         let token;
@@ -14,7 +16,11 @@ const authorize = (req, res, next) => {
 
         const decoded = jwt.verify(token, JWT_SECRET);
 
-        req.user = { id: decoded.userId };
+        const user = await User.findById(decoded.userId);
+
+        if (!user) return res.status(401).json({message: 'unauthorized, user not found'});
+ 
+        req.user = user;
 
         next();
 
@@ -23,3 +29,5 @@ const authorize = (req, res, next) => {
         res.status(401).json({message: 'unauthorized', error: error.message});
     }
 }
+
+export default authorize;
